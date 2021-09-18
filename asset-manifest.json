@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/Marvel-React-App/static/css/main.6cd2053d.chunk.css",
+    "main.js": "/Marvel-React-App/static/js/main.c4314583.chunk.js",
+    "main.js.map": "/Marvel-React-App/static/js/main.c4314583.chunk.js.map",
+    "runtime-main.js": "/Marvel-React-App/static/js/runtime-main.583d4f13.js",
+    "runtime-main.js.map": "/Marvel-React-App/static/js/runtime-main.583d4f13.js.map",
+    "static/css/2.e49adaee.chunk.css": "/Marvel-React-App/static/css/2.e49adaee.chunk.css",
+    "static/js/2.a544a181.chunk.js": "/Marvel-React-App/static/js/2.a544a181.chunk.js",
+    "static/js/2.a544a181.chunk.js.map": "/Marvel-React-App/static/js/2.a544a181.chunk.js.map",
+    "static/js/3.68a88bff.chunk.js": "/Marvel-React-App/static/js/3.68a88bff.chunk.js",
+    "static/js/3.68a88bff.chunk.js.map": "/Marvel-React-App/static/js/3.68a88bff.chunk.js.map",
+    "index.html": "/Marvel-React-App/index.html",
+    "static/css/2.e49adaee.chunk.css.map": "/Marvel-React-App/static/css/2.e49adaee.chunk.css.map",
+    "static/css/main.6cd2053d.chunk.css.map": "/Marvel-React-App/static/css/main.6cd2053d.chunk.css.map",
+    "static/js/2.a544a181.chunk.js.LICENSE.txt": "/Marvel-React-App/static/js/2.a544a181.chunk.js.LICENSE.txt",
+    "static/media/MarvelLogo.7c66e653.png": "/Marvel-React-App/static/media/MarvelLogo.7c66e653.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.583d4f13.js",
+    "static/css/2.e49adaee.chunk.css",
+    "static/js/2.a544a181.chunk.js",
+    "static/css/main.6cd2053d.chunk.css",
+    "static/js/main.c4314583.chunk.js"
+  ]
+}
