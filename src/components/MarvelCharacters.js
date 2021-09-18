@@ -35,8 +35,20 @@ export default function MarvelCharacters() {
         setComicsIsLoading(true)
     };
 
+    const insert = function insert(main_string, ins_string, pos) {
+        if(typeof(pos) == "undefined") {
+         pos = 0;
+       }
+        if(typeof(ins_string) == "undefined") {
+         ins_string = '';
+       }
+        return main_string.slice(0, pos) + ins_string + main_string.slice(pos);
+         }
+
     const fetchComics = (comicsData) => {
-        axios.get(`${comicsData.collectionURI}?apikey=${API_KEY}`)
+        let result = insert(`${comicsData.collectionURI}`,'s', 4)
+        axios.get(`${result}?&apikey=${API_KEY}`)
+        
         .then((results) => {
             setComicsData(results.data.data.results);
             setComicsIsLoading(false)
