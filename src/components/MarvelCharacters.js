@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Image, Button, Row, Col, Modal, Spin } from 'antd';
+import { Card, Image, Button, Col, Row, Modal, Spin } from 'antd';
 import Search from './Search';
 import MarvelLogo from '../assets/MarvelLogo.png';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,45 +12,44 @@ const API_KEY = `a302d154b2249cb8cea2ec2c4cb22eac`;
 export default function MarvelCharacters() {
     const [searchItem, setSearchItem] = useState('');
     const [comicsData, setComicsData] = useState([]);
-    const [storiesData, setStoriesData] = useState([]);
-    const [isComicsLoading, setComicsLoading] = useState(true);
-    const [isComicData, setComicsDataLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isComicsLoading, setComicsIsLoading] = useState(true);
     const searchTerm = (searchItem) => {
         setSearchItem(searchItem);
     }
+    const [charactersData, setCharactersData] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
     const showModal = () => {
         setIsModalVisible(true);
     };
 
-    const showStoriesModal = () => {
-        setIsStoriesModalVisible(true);
-    };
-
     const handleOk = () => {
         setIsModalVisible(false);
+        setComicsData([])
     };
-
-    const handleStoriesOk = () => {
-        setIsStoriesModalVisible(false);
-    }
 
     const handleCancel = () => {
         setIsModalVisible(false);
+        setComicsData([])
+        setComicsIsLoading(true)
     };
 
-    const handleStoriesCancel = () => {
-        setIsStoriesModalVisible(false);
-    };
+    const fetchComics = (comicsData) => {
+        axios.get(`${comicsData.collectionURI}?apikey=${API_KEY}`)
+        .then((results) => {
+            setComicsData(results.data.data.results);
+            setComicsIsLoading(false)
+        })
+        showModal();
+    }
 
-    const [charactersData, setCharactersData] = useState([]);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isStoriesModalVisible, setIsStoriesModalVisible] = useState(false);
     const searchChars = () => {
         if (searchItem) {
             axios.get(`${APIENDPOINT}name=${searchItem}&apikey=${API_KEY}`)
                 .then((response) => {
                     setCharactersData(response.data.data.results);
-                    setComicsLoading(false)
+                    setIsLoading(false);
                     if (response.data.data.results.length === 0) {
                         toast.error("No one here by that name..");
                     }
@@ -65,7 +64,7 @@ export default function MarvelCharacters() {
             axios.get(`${APIENDPOINT}&apikey=${API_KEY}`)
                 .then((response) => {
                     setCharactersData(response.data.data.results);
-                    setComicsLoading(false)
+                    setIsLoading(false);
                     if (response.data.data.results.length === 0) {
                         toast.error("No one here by that name..");
                     }
@@ -74,32 +73,9 @@ export default function MarvelCharacters() {
                 })
         }
     }, [searchItem])
-
-    const checkComics = (comicsData) => {
-        axios.get(`${comicsData}?apikey=${API_KEY}`)
-            .then((comicsData) => {
-                setComicsData(comicsData.data.data.results);
-                setComicsDataLoading(false);
-            })
-        showModal()
-    }
-
-    const checkComicStories = (stories) => {
-        setStoriesData(stories.items)
-        console.log(stories.items)
-
-        showStoriesModal()
-    }
-
-    const getStoriesURL = (resourceURI) => {
-        axios.get(`${resourceURI}?apikey=${API_KEY}`)
-            .then((item) => {
-                console.log(item.data.data.results)
-            })
-    }
     return (
         <div className="app-body">
-            <img src={MarvelLogo} className="marvel-logo" alt="logo" />
+            <img src={MarvelLogo} className="marvel-logo" />
             <Search searchTerm={searchTerm} />
             <Button type="primary"
                 size="large"
@@ -109,10 +85,10 @@ export default function MarvelCharacters() {
                 Search
             </Button>
             <ToastContainer />
-            {isComicsLoading ? (
+            {isLoading ? (
                 <div className="spinner">
-                    <Spin />
-                    <h3 style={{ marginLeft: 10 }}>Loading...</h3>
+                    <Spin size="large"/>
+                    <h4>Loading..Please Wait</h4>
                 </div>
             ) : (
                 charactersData.map((item) => {
@@ -127,12 +103,11 @@ export default function MarvelCharacters() {
                                 </Col>
                                 <Col span={12}>
                                     <p>{item.description ? item.description : 'No Description Available'}</p>
-
                                     <Button type="primary"
                                         size="large"
-                                        onClick={() => checkComics(item.comics.collectionURI)}
+                                        onClick={() => fetchComics(item.comics)}
                                     >
-                                        Check out the Comics
+                                        Open Stories
                                     </Button>
                                 </Col>
                             </Row>
@@ -140,38 +115,28 @@ export default function MarvelCharacters() {
                     )
                 })
             )}
-            <Modal width={1000} centered style={{ top: 20 }} title="Comic Data" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                {isComicData ? (
+            <Modal
+                centered
+                style={{top: 20}}
+                title="Comics Data"
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}>  
+                {isComicsLoading ? (
                     <div className="spinner">
-                        <Spin />
-                        <h3 style={{ marginLeft: 10 }}>Loading...</h3>
+                        <Spin size="large" />
+                        <h4>Loading..Please Wait</h4>
                     </div>
                 ) : (
                     comicsData.map((item) => {
                         return (
                             <div className="comics-data">
-                                <div>
-                                    <h2>{item.title}</h2>
-                                    <p>{item.description ? item.description : 'No Description Available'}</p>
-                                    <Button type="primary"
-                                        onClick={() => checkComicStories(item.stories)}
-                                        size="large"
-                                    >
-                                        Check Stories
-                                    </Button>
-                                </div>
+                                <h2>{item.title}</h2>
+                                <p>{item.description ? item.description : "No Description Available.."}</p>
                             </div>
                         )
                     })
-                )}
-            </Modal>
-
-            <Modal width={2000} centered title="Comic Data" visible={isStoriesModalVisible} onOk={handleStoriesOk} onCancel={handleStoriesCancel}>
-                {storiesData.map((item) => {
-                    return (
-                        <h4><a onClick={() => getStoriesURL(item.resourceURI)}>{item.name}</a></h4>
-                    )
-                })}
+                )} 
             </Modal>
         </div>
     )

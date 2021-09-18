@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Gluten&display=swap');
+
+* {
+    font-family: 'Gluten', cursive;
+}
+
 .app-body {
     padding: 20px;
     display: flex;
@@ -17,13 +23,13 @@
 }
 
 .comics-data{
-    padding: 20px;
+    padding: 10px;
 }
 
-.spinner {
+.spinner{
     margin: 20px 0;
     margin-bottom: 20px;
     padding: 30px 50px;
     text-align: center;
     border-radius: 4px;
-  }
+}
