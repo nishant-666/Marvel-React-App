@@ -36,27 +36,28 @@ export default function MarvelCharacters() {
     };
 
     const insert = function insert(main_string, ins_string, pos) {
-        if(typeof(pos) == "undefined") {
-         pos = 0;
-       }
-        if(typeof(ins_string) == "undefined") {
-         ins_string = '';
-       }
+        if (typeof (pos) == "undefined") {
+            pos = 0;
+        }
+        if (typeof (ins_string) == "undefined") {
+            ins_string = '';
+        }
         return main_string.slice(0, pos) + ins_string + main_string.slice(pos);
-         }
+    }
 
     const fetchComics = (comicsData) => {
-        let result = insert(`${comicsData.collectionURI}`,'s', 4)
+        let result = insert(`${comicsData.collectionURI}`, 's', 4)
         axios.get(`${result}?&apikey=${API_KEY}`)
-        
-        .then((results) => {
-            setComicsData(results.data.data.results);
-            setComicsIsLoading(false)
-        })
+
+            .then((results) => {
+                setComicsData(results.data.data.results);
+                setComicsIsLoading(false)
+            })
         showModal();
     }
 
     const searchChars = () => {
+        setIsLoading(true);
         if (searchItem) {
             axios.get(`${APIENDPOINT}name=${searchItem}&apikey=${API_KEY}`)
                 .then((response) => {
@@ -73,6 +74,7 @@ export default function MarvelCharacters() {
 
     useEffect(() => {
         if (searchItem === '') {
+            setIsLoading(true);
             axios.get(`${APIENDPOINT}&apikey=${API_KEY}`)
                 .then((response) => {
                     setCharactersData(response.data.data.results);
@@ -99,7 +101,7 @@ export default function MarvelCharacters() {
             <ToastContainer />
             {isLoading ? (
                 <div className="spinner">
-                    <Spin size="large"/>
+                    <Spin size="large" />
                     <h4>Loading..Please Wait</h4>
                 </div>
             ) : (
@@ -129,11 +131,11 @@ export default function MarvelCharacters() {
             )}
             <Modal
                 centered
-                style={{top: 20}}
+                style={{ top: 20 }}
                 title="Comics Data"
                 visible={isModalVisible}
                 onOk={handleOk}
-                onCancel={handleCancel}>  
+                onCancel={handleCancel}>
                 {isComicsLoading ? (
                     <div className="spinner">
                         <Spin size="large" />
@@ -148,7 +150,7 @@ export default function MarvelCharacters() {
                             </div>
                         )
                     })
-                )} 
+                )}
             </Modal>
         </div>
     )
